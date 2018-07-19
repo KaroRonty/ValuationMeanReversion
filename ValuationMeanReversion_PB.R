@@ -31,8 +31,6 @@ for (i in 1:10){
     select(-dates) %>% 
     colMeans(na.rm = T)
   
-  print(paste(quantile(full_data$PB, deciles[i + 1], na.rm = T), quantile(full_data$PB, deciles[i], na.rm = T)))
-  
   assign(paste0("pb_n", i), as.data.frame(temp))
   assign(paste0("pb_n", i), as.data.frame(cbind(paste0(i, ". decile"), temp)))
 }
