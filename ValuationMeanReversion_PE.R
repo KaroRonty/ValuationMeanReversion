@@ -1,11 +1,15 @@
 library(dplyr)
 library(gtools)
 library(ggplot2)
+
+# Retrieve data from Shiller & Goyal
 source("https://raw.githubusercontent.com/KaroRonty/ShillerGoyalDataRetriever/master/ShillerGoyalDataRetriever.r")
 
+# Calculate P/E
 full_data <- full_data %>% 
   mutate(PE = P / E)
 
+# Make a data frame containing the paths of the valuation measure
 pe_data <- full_data %>% 
   select(dates, PE) %>%
   mutate(dates = paste0(.$dates, "-01")) %>% 
@@ -22,8 +26,8 @@ pe_data <- full_data %>%
          PE_n10 = lead(.$PE, 12 * 10)
   )
 
+# Calculate valuation deciles & their paths
 deciles <- seq(0, 1.1, 0.1)
-
 for (i in 1:10){
   temp <- pe_data %>% 
     filter(PE < quantile(full_data$PE, deciles[i + 1], na.rm = T),
