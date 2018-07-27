@@ -37,19 +37,19 @@ for (i in 1:10){
 # Bind all CAPE data frames
 capes <- mget(ls(pattern = "cape_n")) %>% 
   bind_rows() %>% 
-  `colnames<-`(c("Desiili", "CAPE"))
+  `colnames<-`(c("Decile", "CAPE"))
 
 # Order by decile & remove unnecessary data frames
-capes <- capes[mixedorder(capes$Desiili), ]
+capes <- capes[mixedorder(capes$Decile), ]
 capes$CAPE <- as.numeric(capes$CAPE)
 rm(list = ls(pattern = "cape_n"))
 
 # Add orders & factor levels for plotting
-capes$Vuosi <- 0:10
-capes$Desiili <- as.factor(capes$Desiili)
-capes <- transform(capes, Desiili=factor(Desiili,levels=mixedsort(levels(Desiili), 
+capes$Year <- 0:10
+capes$Decile <- as.factor(capes$Decile)
+capes <- transform(capes, Decile=factor(Decile,levels=mixedsort(levels(Decile), 
                                                        decreasing=TRUE)))
 # Plot
-ggplot(data = capes, aes(x = Vuosi, y = CAPE)) +
-  geom_line(aes(color = Desiili, group = Desiili), size = 1.2) +
+ggplot(data = capes, aes(x = Year, y = CAPE)) +
+  geom_line(aes(color = Decile, group = Decile), size = 1.2) +
   scale_x_continuous(breaks = 0:10)
