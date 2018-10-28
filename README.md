@@ -8,4 +8,4 @@ Valuation measures were put into deciles and their average paths were followed, 
 
 Also, the same analysis was done on multiple countries with data from Barclays (http://shiller.barclays.com/SM/12/en/indices/static/historic-ratios.app).
 
-![Countries](https://github.com/KaroRonty/ValuationMeanReversion/blob/master/AllCountriesMeanReversion.png)
+![Countries](https://github.com/KaroRonty/ValuationMeanReversion/blob/master/CountriesMeanReversion.png)
