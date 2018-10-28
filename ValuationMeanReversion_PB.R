@@ -23,7 +23,17 @@ pb_data <- full_data %>%
          PB_n7 = lead(.$PB, 12 * 7),
          PB_n8 = lead(.$PB, 12 * 8),
          PB_n9 = lead(.$PB, 12 * 9),
-         PB_n10 = lead(.$PB, 12 * 10)
+         PB_n10 = lead(.$PB, 12 * 10),
+         PB_n11 = lead(.$PB, 12 * 11),
+         PB_n12 = lead(.$PB, 12 * 12),
+         PB_n13 = lead(.$PB, 12 * 13),
+         PB_n14 = lead(.$PB, 12 * 14),
+         PB_n15 = lead(.$PB, 12 * 15),
+         PB_n16 = lead(.$PB, 12 * 16),
+         PB_n17 = lead(.$PB, 12 * 17),
+         PB_n18 = lead(.$PB, 12 * 18),
+         PB_n19 = lead(.$PB, 12 * 19),
+         PB_n20 = lead(.$PB, 12 * 20)
   )
 
 # Calculate valuation deciles & their paths
@@ -49,11 +59,11 @@ pbs$PB <- as.numeric(pbs$PB)
 rm(list = ls(pattern = "pb_n"))
 
 # Add orders & factor levels for plotting
-pbs$Year <- 0:10
+pbs$Year <- 0:20
 pbs$Decile <- as.factor(pbs$Decile)
 pbs <- transform(pbs, Decile=factor(Decile,levels=mixedsort(levels(Decile), 
                                                                 decreasing=TRUE)))
 # Plot
 ggplot(data = pbs, aes(x = Year, y = PB)) +
   geom_line(aes(color = Decile, group = Decile), size = 1.2) +
-  scale_x_continuous(breaks = 0:10)
+  scale_x_continuous(breaks = 0:20)
