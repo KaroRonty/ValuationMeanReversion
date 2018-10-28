@@ -19,7 +19,17 @@ cape_data <- full_data %>%
          CAPE_n7 = lead(.$CAPE, 12 * 7),
          CAPE_n8 = lead(.$CAPE, 12 * 8),
          CAPE_n9 = lead(.$CAPE, 12 * 9),
-         CAPE_n10 = lead(.$CAPE, 12 * 10)
+         CAPE_n10 = lead(.$CAPE, 12 * 10),
+         CAPE_n11 = lead(.$CAPE, 12 * 11),
+         CAPE_n12 = lead(.$CAPE, 12 * 12),
+         CAPE_n13 = lead(.$CAPE, 12 * 13),
+         CAPE_n14 = lead(.$CAPE, 12 * 14),
+         CAPE_n15 = lead(.$CAPE, 12 * 15),
+         CAPE_n16 = lead(.$CAPE, 12 * 16),
+         CAPE_n17 = lead(.$CAPE, 12 * 17),
+         CAPE_n18 = lead(.$CAPE, 12 * 18),
+         CAPE_n19 = lead(.$CAPE, 12 * 19),
+         CAPE_n20 = lead(.$CAPE, 12 * 20)
   )
   
 # Calculate valuation deciles & their paths
@@ -45,11 +55,11 @@ capes$CAPE <- as.numeric(capes$CAPE)
 rm(list = ls(pattern = "cape_n"))
 
 # Add orders & factor levels for plotting
-capes$Year <- 0:10
+capes$Year <- 0:20
 capes$Decile <- as.factor(capes$Decile)
 capes <- transform(capes, Decile=factor(Decile,levels=mixedsort(levels(Decile), 
                                                        decreasing=TRUE)))
 # Plot
 ggplot(data = capes, aes(x = Year, y = CAPE)) +
   geom_line(aes(color = Decile, group = Decile), size = 1.2) +
-  scale_x_continuous(breaks = 0:10)
+  scale_x_continuous(breaks = 0:20)
