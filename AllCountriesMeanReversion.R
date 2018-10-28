@@ -9,27 +9,22 @@ data[data == 0] <- NA
 data <- data[1:I(grep("The", data$Date) - 1), ]
 data <- data %>% select(-Date)
 
-# Calculate average CAPEs
-cape_data <- as.data.frame(rowMeans(data, na.rm = T))
+# Combine CAPEs of different countries
+na_vector <- rep(NA, 10)
+cape_data <- NA
+for(i in seq_along(colnames(data))){
+  cape_data <- c(cape_data, na_vector, data[, i])
+}
+
+# Format as data frame
+cape_data <- as.data.frame(cape_data)
 colnames(cape_data) <- "CAPE"
 
 # Calculate CAPE after n months
-cape_data <- cape_data %>%
-  mutate(CAPE_n1 = lead(.$CAPE, 12 * 1),
-         CAPE_n2 = lead(.$CAPE, 12 * 2),
-         CAPE_n3 = lead(.$CAPE, 12 * 3),
-         CAPE_n4 = lead(.$CAPE, 12 * 4),
-         CAPE_n5 = lead(.$CAPE, 12 * 5),
-         CAPE_n6 = lead(.$CAPE, 12 * 6),
-         CAPE_n7 = lead(.$CAPE, 12 * 7),
-         CAPE_n8 = lead(.$CAPE, 12 * 8),
-         CAPE_n9 = lead(.$CAPE, 12 * 9),
-         CAPE_n10 = lead(.$CAPE, 12 * 10)
-  )
-
-# Format and omit NA rows
-colnames(cape_data)[1] <- "CAPE"
-cape_data <- na.omit(cape_data)
+for(i in 1:20){
+  cape_data <- cbind(cape_data, lead(cape_data$CAPE, 12 * i))
+  colnames(cape_data)[i + 1] <- paste0("CAPE_n", i)
+}
 
 # Calculate means for the CAPEs in each decile
 deciles <- seq(0, 1.1, 0.1)
@@ -54,11 +49,11 @@ capes$CAPE <- as.numeric(capes$CAPE)
 rm(list = ls(pattern = "cape_n"))
 
 # Add orders & factor levels for plotting
-capes$Year <- 0:10
+capes$Year <- 0:20
 capes$Decile <- as.factor(capes$Decile)
 capes <- transform(capes, Decile=factor(Decile,levels=mixedsort(levels(Decile), 
                                                                 decreasing=TRUE)))
 # Plot
 ggplot(data = capes, aes(x = Year, y = CAPE)) +
   geom_line(aes(color = Decile, group = Decile), size = 1.2) +
-  scale_x_continuous(breaks = 0:10)
+  scale_x_continuous(breaks = 0:20)
